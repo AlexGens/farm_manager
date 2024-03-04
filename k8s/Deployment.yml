@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: farm-manager-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: farm-manager
+  template:
+    metadata:
+      labels:
+        app: farm-manager
+    spec:
+      containers:
+        - name: farm-manager
+          imagePullPolicy: Always
+          image: alexgens/docker-demo:1.0.1
+          livenessProbe:
+            httpGet:
+              path: "/health"
+              port: 8000
+              scheme: HTTP
+          readinessProbe:
+            httpGet:
+              path: "/health"
+              port: 8000
+              scheme: HTTP
+          ports:
+            - containerPort: 8000
